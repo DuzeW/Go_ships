@@ -1,15 +1,14 @@
 package main
 
-import "fmt"
-
 var URL = "https://go-pjatk-server.fly.dev/api/game"
 
 func main() {
-	nick := ""
-	desc := ""
-	nick, desc = player_info()
-	fmt.Println("Nick:", nick)
-	fmt.Println("Opis:", desc)
+	//nick := ""
+	//desc := ""
+	//nick, desc = player_info()
+	//fmt.Println("Nick:", nick)
+	//fmt.Println("Opis:", desc)
+	set_ships()
 	//fmt.Println("pętla!")
 	//data := map[string]interface{}{
 	//	"coords":      []string{"A1", "A3", "B9", "C7", "D1", "D2", "D3", "D4", "D7", "E7", "F1", "F2", "F3", "F5", "G5", "G8", "G9", "I4", "J4", "J8"},
