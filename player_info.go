@@ -10,7 +10,7 @@ import (
 var nick string
 var desc string
 
-func player_info() {
+func playerInfo() {
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Println("Wpisz nick:")
 	nick, err := reader.ReadString('\n')
