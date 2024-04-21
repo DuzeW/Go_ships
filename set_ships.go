@@ -9,7 +9,7 @@ import (
 )
 
 var board = gui.New(gui.NewConfig())
-var coords [10]string
+var coords [20]string
 var counter = int8(-1)
 
 func set_ships() {
@@ -23,22 +23,23 @@ func set_ships() {
 		pick_place()
 	}
 	board.Display()
-	fmt.Println("Wybierz miejsca okrentu 3 masztowego")
+
 	for range 2 {
+		fmt.Println("Wybierz miejsca okrentu 3 masztowego")
 		for range 3 {
 			pick_place()
 		}
 	}
 	board.Display()
-	fmt.Println("Wybierz miejsca okrentu 2 masztowego")
 	for range 3 {
+		fmt.Println("Wybierz miejsca okrentu 2 masztowego")
 		for range 2 {
 			pick_place()
 		}
 	}
 	board.Display()
-	fmt.Println("Wybierz miejsca okrentu 1 masztowego")
 	for range 4 {
+		fmt.Println("Wybierz miejsca okrentu 1 masztowego")
 		pick_place()
 	}
 	board.Display()
@@ -55,13 +56,7 @@ func pick_place() {
 	fmt.Println(pos)
 	board.Set(gui.Left, pos, gui.Ship)
 	board.Display()
-	counter += counter
+	counter = counter + 1
 	coords[counter] = pos
 	return
-}
-func get_board() *gui.Board {
-	return board
-}
-func get_coords() [10]string {
-	return coords
 }
