@@ -7,8 +7,6 @@ import (
 	"net/http"
 )
 
-var API = string("")
-
 func connect() {
 	URL := BASIC_URL + "/game"
 	data := map[string]interface{}{

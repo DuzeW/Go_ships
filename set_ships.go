@@ -59,6 +59,10 @@ func getPos() bool {
 		fmt.Println("Nieodpowiednia liczba")
 		return false
 	}
+	if len(pos) == 2 && (pos[1] < 1 || pos[1] > 9) {
+		fmt.Println("Nieodpowiednia liczba")
+		return false
+	}
 	if pos[0] < 'A' || pos[0] > 'J' {
 		fmt.Println("Nieodpowiednia litera")
 		return false
