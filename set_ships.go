@@ -69,7 +69,6 @@ func getCoord() (bool, string) {
 func isEmptyCoord(coord string) bool {
 	for i := 0; i < 20; i++ {
 		if coord == coords[i] {
-			fmt.Println("Miejsce zajęte")
 			return false
 		}
 	}
@@ -79,6 +78,7 @@ func getCorrectCoord() string {
 	isCorrect, coord := getCoord()
 	isCorrect = isEmptyCoord(coord)
 	for !isCorrect {
+		fmt.Println("Spróbuj ponownie")
 		isCorrect = isEmptyCoord(coord)
 		isCorrect, coord = getCoord()
 	}

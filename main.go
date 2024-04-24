@@ -6,5 +6,9 @@ func main() {
 	playerInfo()
 	setShips()
 	connect()
-
+	for {
+		fire()
+		checkBoard()
+		board.Display()
+	}
 }
