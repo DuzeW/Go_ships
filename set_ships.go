@@ -10,7 +10,6 @@ import (
 
 var board = gui.New(gui.NewConfig())
 var coords [20]string
-var counter = int8(-1)
 
 func setShips() {
 	fmt.Println("Ustaw swoje statki")
@@ -18,54 +17,70 @@ func setShips() {
 	fmt.Println("Podstawową zasadą konstrukcji okrętów bojowych (dłuższych niż 1) jest ich budowa z elementów sąsiadujących ze sobą bokami, a nie na skos.")
 	fmt.Println("Od którego statku zaczniemy?")
 
-	fmt.Println("Wybierz miejsce okrentu 4 masztowego")
-
-	fmt.Println("Wybierz miejsca okrentu 3 masztowego")
-
-	fmt.Println("Wybierz miejsca okrentu 2 masztowego")
-
-	fmt.Println("Wybierz miejsca okrentu 1 masztowego")
-	isCorrect := getPos()
-	for isCorrect == false {
-		fmt.Println("Spróbuj ponownie")
-		isCorrect = getPos()
+	for i := 0; i < 20; i++ {
+		switch i {
+		case 0, 1, 2, 3:
+			fmt.Println("Wybierz miejsce okrentu 4 masztowego")
+		case 4, 5, 6, 7, 8, 9:
+			fmt.Println("Wybierz miejsca okrentu 3 masztowego")
+		case 10, 11, 12, 13, 14, 15:
+			fmt.Println("Wybierz miejsca okrentu 2 masztowego")
+		case 16, 17, 18, 19:
+			fmt.Println("Wybierz miejsca okrentu 1 masztowego")
+		default:
+			fmt.Println("Błąd podczas ustawiania statku")
+		}
+		coord := getCorrectCoord()
+		coords[i] = coord
+		board.Set(gui.Left, coord, gui.Ship)
+		board.Display()
+		fmt.Println(coords)
 	}
 }
 
-func piclace() {
-
-	//board.Set(gui.Left, pos, gui.Ship)
-	//board.Display()
-	//counter = counter + 1
-	//coords[counter] = pos
-	//return
-}
-
-func getPos() bool {
+func getCoord() (bool, string) {
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Println("Wpisz Pozycję:")
-	pos, err := reader.ReadString('\n')
+	fmt.Println("Wpisz Koordynaty:")
+	coord, err := reader.ReadString('\n')
 	if err != nil {
-		fmt.Println("Błąd podczas wpisywaniu pozycji:", err)
-		return false
+		fmt.Println("Błąd podczas wpisywaniu koordynatów:", err)
+		return false, ""
 	}
-	pos = strings.TrimSpace(pos)
-	fmt.Println(pos)
-	if len(pos) < 2 || len(pos) > 3 {
+	coord = strings.TrimSpace(coord)
+	if len(coord) < 2 || len(coord) > 3 {
 		fmt.Println("Nieodpowiednia długość")
-		return false
+		return false, ""
 	}
-	if len(pos) == 3 && (pos[1] != 1 || pos[2] != 0) {
+	if len(coord) == 3 && (coord[1] != '1' || coord[2] != '0') {
 		fmt.Println("Nieodpowiednia liczba")
-		return false
+		return false, ""
 	}
-	if len(pos) == 2 && (pos[1] < 1 || pos[1] > 9) {
-		fmt.Println("Nieodpowiednia liczba")
-		return false
+	if len(coord) == 2 && (coord[1] < '1' || coord[1] > '9') {
+		fmt.Println("Nieodpowiednia liczba tu")
+		return false, ""
 	}
-	if pos[0] < 'A' || pos[0] > 'J' {
+	if coord[0] < 'A' || coord[0] > 'J' {
 		fmt.Println("Nieodpowiednia litera")
-		return false
+		return false, ""
+	}
+	return true, coord
+}
+
+func isEmptyCoord(coord string) bool {
+	for i := 0; i < 20; i++ {
+		if coord == coords[i] {
+			fmt.Println("Miejsce zajęte")
+			return false
+		}
 	}
 	return true
+}
+func getCorrectCoord() string {
+	isCorrect, coord := getCoord()
+	isCorrect = isEmptyCoord(coord)
+	for !isCorrect {
+		isCorrect = isEmptyCoord(coord)
+		isCorrect, coord = getCoord()
+	}
+	return coord
 }

@@ -7,8 +7,12 @@ import (
 	"net/http"
 )
 
+var tokenAPI string
+
 func connect() {
+
 	URL := BASIC_URL + "/game"
+
 	data := map[string]interface{}{
 		"coords":      coords,
 		"desc":        desc,
@@ -29,7 +33,7 @@ func connect() {
 	defer resp.Body.Close()
 
 	fmt.Println("APIkey")
-	var tokenAPI = resp.Header.Get("X-Auth-Token")
+	tokenAPI = resp.Header.Get("X-Auth-Token")
 	tokenAPI = tokenAPI[1 : len(tokenAPI)-1]
 	fmt.Println(tokenAPI)
 }

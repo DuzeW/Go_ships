@@ -6,4 +6,5 @@ func main() {
 	playerInfo()
 	setShips()
 	connect()
+
 }
