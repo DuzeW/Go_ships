@@ -6,6 +6,8 @@ import (
 	"net/http"
 )
 
+var reqBoard []string
+
 func checkBoard() {
 	URL := BASIC_URL + "/game/board"
 	req, err := http.NewRequest("GET", URL, nil)
