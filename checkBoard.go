@@ -30,5 +30,10 @@ func checkBoard() {
 		return
 	}
 	reqBoard := data["board"]
+	err = board.Import(reqBoard)
+	if err != nil {
+		fmt.Println("Błąd podczas pobierania tablicy błąd:", err)
+		return
+	}
 	fmt.Println(reqBoard)
 }

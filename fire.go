@@ -68,7 +68,9 @@ func missAround() {
 		c1, c2 := coordToInts(shotsR[k])
 		for i := -1; i < 2; i++ {
 			for j := -1; j < 2; j++ {
-				board.Set(gui.Right, intsToCoord(c1+i, c2+j), gui.Miss)
+				if (c1+i-64 <= 10 && c1+i-64 > 0) && (c2+j <= 10 && c2+j > 0) {
+					board.Set(gui.Right, intsToCoord(c1+i, c2+j), gui.Miss)
+				}
 
 			}
 		}

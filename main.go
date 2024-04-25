@@ -11,20 +11,19 @@ var BASIC_URL = "https://go-pjatk-server.fly.dev/api"
 
 func main() {
 	for {
+
 		playerInfo()
-		setShips()
+		fmt.Println("Twój nick to: ", nick)
+		fmt.Println("Twój opis to: ", desc)
+		//setShips()
 		connect()
-		for len(shotsR) != 20 || len(reqBoard) == 0 {
+		for !isEnded {
 			fire()
 			checkBoard()
+			gameStatus()
 			board.Display()
 		}
-		if len(shotsR) != 20 {
-			fmt.Println("Zwycięstwo")
-		}
-		if len(reqBoard) == 0 {
-			fmt.Println("Przegrana")
-		}
+		fmt.Println("Gra dobiegła końca wynik to:", lastGameStatus)
 		playAgain()
 	}
 
