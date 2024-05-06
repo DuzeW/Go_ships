@@ -15,7 +15,7 @@ func main() {
 		playerInfo()
 		fmt.Println("Twój nick to: ", nick)
 		fmt.Println("Twój opis to: ", desc)
-		//setShips()
+		setShips()
 		connect()
 		for !isEnded {
 			fire()

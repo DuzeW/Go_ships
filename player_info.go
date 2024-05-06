@@ -14,17 +14,19 @@ var playWithBot bool
 func playerInfo() {
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Println("Wpisz nick:")
-	nick, err := reader.ReadString('\n')
+	nickInput, err := reader.ReadString('\n')
 	if err != nil {
 		fmt.Println("Błąd podczas wpisywaniu nicku:", err)
 		return
 	}
+	nick = nickInput
 	fmt.Println("Wpisz opis:")
-	desc, err := reader.ReadString('\n')
+	descInput, err := reader.ReadString('\n')
 	if err != nil {
 		fmt.Println("Błąd podczas wpisywaniu opisu:", err)
 		return
 	}
+	desc = descInput
 	badAns := true
 	for badAns {
 		fmt.Println("Czy chcesz zagrać z botem?(T/N)")
