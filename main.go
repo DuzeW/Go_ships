@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 )
 
 var BASIC_URL = "https://go-pjatk-server.fly.dev/api"
@@ -13,10 +14,13 @@ func main() {
 	for {
 
 		playerInfo()
-		fmt.Println("Twój nick to: ", nick)
-		fmt.Println("Twój opis to: ", desc)
-		setShips()
+		//setShips()
 		connect()
+		gameStatusFail := gameStatus()
+		for gameStatusFail == true {
+			time.Sleep(1 * time.Second)
+			gameStatusFail = gameStatus()
+		}
 		for !isEnded {
 			fire()
 			checkBoard()

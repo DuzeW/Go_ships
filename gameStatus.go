@@ -20,26 +20,26 @@ type GameResponse struct {
 var isEnded bool = false
 var lastGameStatus string
 
-func gameStatus() {
+func gameStatus() bool {
 	URL := BASIC_URL + "/game"
 	req, err := http.NewRequest("GET", URL, nil)
 	if err != nil {
 		fmt.Println("Błąd tworzenia zapytania:", err)
-		return
+		return true
 	}
 	req.Header.Set("X-Auth-Token", tokenAPI)
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
 		fmt.Println("Błąd wysyłania zapytania:", err)
-		return
+		return true
 	}
 	defer resp.Body.Close()
 	var data GameResponse
 	err = json.NewDecoder(resp.Body).Decode(&data)
 	if err != nil {
 		fmt.Println("Błąd odbierania zapytania:", err)
-		return
+		return true
 	}
 	if data.GameStatus == "ended" {
 		isEnded = true
@@ -55,4 +55,5 @@ func gameStatus() {
 	fmt.Println("Opponent:", data.Opponent)
 	fmt.Println("ShouldFire:", data.ShouldFire)
 	fmt.Println("Timer:", data.Timer)
+	return false
 }
