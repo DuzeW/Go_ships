@@ -48,8 +48,10 @@ func gameStatus() bool {
 	fmt.Println("Nick:", data.Nick)
 	fmt.Println("OppShots:")
 	for _, shot := range data.OppShots {
+
 		board.Set(gui.Left, shot, gui.Miss)
 		//ZROBIĆ SPRAWDZENIE CZY POLE JEST PUSTE
+
 		board.Set(gui.Left, shot, gui.Hit)
 	}
 	fmt.Println("Opponent:", data.Opponent)

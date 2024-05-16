@@ -12,9 +12,8 @@ var BASIC_URL = "https://go-pjatk-server.fly.dev/api"
 
 func main() {
 	for {
-
 		playerInfo()
-		//setShips()
+		setShips()
 		connect()
 		gameStatusFail := gameStatus()
 		for gameStatusFail == true {
