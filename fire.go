@@ -63,6 +63,9 @@ func fire() {
 		missAround()
 	}
 }
+func isShotted(){
+
+}
 func missAround() {
 	for k := 0; k < len(shotsR); k++ {
 		c1, c2 := coordToInts(shotsR[k])
