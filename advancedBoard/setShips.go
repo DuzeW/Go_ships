@@ -29,9 +29,9 @@ func SetShips() {
 			isSelected := false
 			for i := 0; i < len(selectedX); i++ {
 				if selectedX[i] == x && selectedY[i] == y {
-					selectedX = append(selectedX[:i], selectedX[i:]...)
-					selectedY = append(selectedY[:i], selectedY[i:]...)
-					states[selectedX[i]][selectedY[i]] = gui.Empty
+					selectedX = append(selectedX[:i], selectedX[i+1:]...)
+					selectedY = append(selectedY[:i], selectedY[i+1:]...)
+					//states[selectedX[i]][selectedY[i]] = gui.Empty
 					isSelected = true
 				}
 			}
@@ -43,7 +43,7 @@ func SetShips() {
 			for i := 0; i < len(selectedX); i++ {
 				states[selectedX[i]][selectedY[i]] = gui.Ship
 			}
-			txt.SetText(fmt.Sprintf("Coordinate: %s %t\n", char, isSelected))
+			txt.SetText(fmt.Sprintf("Coordinate: %s %s %d", char, intsToCoord(x, y), y))
 			board.SetStates(states)
 			ui.Log("Coordinate: %s", char) // logs are displayed after the game exits
 		}
@@ -57,8 +57,8 @@ func coordToInts(coord string) (int, int) {
 	return int(coord[0] - 65), int(coord[1] - 49)
 }
 func intsToCoord(x, y int) string {
-	if y == 10 {
-		return string(x) + "10"
+	if y == 9 {
+		return string(x+65) + "10"
 	}
-	return string(x) + string(y+'0')
+	return string(x+65) + string(y+49)
 }
