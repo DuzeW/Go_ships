@@ -1,4 +1,4 @@
-module statki
+module ships
 
 go 1.22
 

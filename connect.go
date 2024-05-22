@@ -15,10 +15,10 @@ func connect() {
 	var coords = []string{"A1", "A2", "A3", "A4", "C1", "C2", "C3", "E1", "E2", "E3", "G1", "G2", "I1", "I2", "A10", "B10", "J10", "I8", "A8", "E6"}
 	data := map[string]interface{}{
 		"coords":      coords,
-		"desc":        desc,
-		"nick":        nick,
+		"desc":        "desc",
+		"nick":        "nick",
 		"target_nick": "",
-		"wpbot":       playWithBot,
+		"wpbot":       "playWithBot",
 	}
 	jsonData, err := json.Marshal(data)
 	if err != nil {
