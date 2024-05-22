@@ -5,7 +5,6 @@ import (
 	"fmt"
 	gui "github.com/grupawp/warships-gui/v2"
 	"ships/controllerHTTP"
-	"strings"
 )
 
 func ShowBoards() {
@@ -35,10 +34,10 @@ func ShowBoards() {
 	var miss []string
 	var hit []string
 	go func() {
+		controllerHTTP.GameStatus()
 		for {
 			char := opBoard.Listen(context.TODO())
 			result := controllerHTTP.Fire(char)
-			result = "sunk"
 			if result == "miss" {
 				miss = append(miss, char)
 			}
@@ -65,11 +64,24 @@ func ShowBoards() {
 				x, y := coordToInts(hit[i])
 				opStates[x][y] = gui.Hit
 			}
-			missStr := strings.Join(miss, ", ")
-			txt.SetText(fmt.Sprintf("Coordinate: %s %s", char, missStr))
+			txt.SetText(fmt.Sprintf("Coordinate: %s %s", char, result))
 			opBoard.SetStates(opStates)
 			ui.Log("Coordinate: %s", char)
 
+			for i := 0; i < len(controllerHTTP.OppShots); i++ {
+				x, y := coordToInts(controllerHTTP.OppShots[i])
+				states[x][y] = gui.Miss
+			}
+			for i := 0; i < len(controllerHTTP.OppShots); i++ {
+				x, y := coordToInts(controllerHTTP.OppShots[i])
+				for j := 0; j < len(myCoords); j++ {
+					if controllerHTTP.OppShots[i] == myCoords[j] {
+						states[x][y] = gui.Hit
+					}
+				}
+			}
+			board.SetStates(states)
+			controllerHTTP.GameStatus()
 		}
 	}()
 	ui.Start(context.TODO(), nil)
