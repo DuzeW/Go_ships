@@ -19,13 +19,31 @@ func SetShips() {
 	go func() {
 		x := 1
 		y := 1
+		var selectedX []int
+		var selectedY []int
 		for {
-			char := board.Listen(context.TODO())
-			x, y = coordToInts(char)
-			txt.SetText(fmt.Sprintf("Coordinate: %s", char))
 
 			states := [10][10]gui.State{}
-			states[x][y] = gui.Ship
+			char := board.Listen(context.TODO())
+			x, y = coordToInts(char)
+			isSelected := false
+			for i := 0; i < len(selectedX); i++ {
+				if selectedX[i] == x && selectedY[i] == y {
+					selectedX = append(selectedX[:i], selectedX[i:]...)
+					selectedY = append(selectedY[:i], selectedY[i:]...)
+					states[selectedX[i]][selectedY[i]] = gui.Empty
+					isSelected = true
+				}
+			}
+			if len(selectedX) < 20 && isSelected == false {
+				selectedX = append(selectedX, x)
+				selectedY = append(selectedY, y)
+			}
+
+			for i := 0; i < len(selectedX); i++ {
+				states[selectedX[i]][selectedY[i]] = gui.Ship
+			}
+			txt.SetText(fmt.Sprintf("Coordinate: %s %t\n", char, isSelected))
 			board.SetStates(states)
 			ui.Log("Coordinate: %s", char) // logs are displayed after the game exits
 		}
