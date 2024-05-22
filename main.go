@@ -1,24 +1,25 @@
 package main
 
 import (
-	"ships/advancedBoard"
-	"ships/askPlayer"
-	"ships/controllerHTTP"
-	"time"
+	"ships/game"
 )
 
 func main() {
-	askPlayer.PlayerNick()
-	askPlayer.PlayerDesc()
-	controllerHTTP.WaitingList()
-	askPlayer.ChooseOp()
-	advancedBoard.SetShips()
-	controllerHTTP.Connect()
-	controllerHTTP.GameStatus()
-	for controllerHTTP.Status != "game_in_progress" {
-		time.Sleep(1 * time.Second)
-		controllerHTTP.GameStatus()
-	}
+
+	//askPlayer.PlayerNick()
+	//askPlayer.PlayerDesc()
+	//controllerHTTP.WaitingList()
+	//askPlayer.ChooseOp()
+	//advancedBoard.SetShips()
+	//controllerHTTP.Connect()
+	//controllerHTTP.GameStatus()
+	//for controllerHTTP.Status != "game_in_progress" {
+	//	time.Sleep(1 * time.Second)
+	//	controllerHTTP.GameStatus()
+	//	fmt.Println("Oczekiwanie na grę")
+	//}
+	game.ShowBoards()
+
 	//	for {
 	//		setShips()
 	//		connect()

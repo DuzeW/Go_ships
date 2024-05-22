@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"ships/advancedBoard"
 	"ships/askPlayer"
-	"time"
 )
 
 var basicURL = "https://go-pjatk-server.fly.dev/api"
@@ -38,5 +37,5 @@ func Connect() {
 	fmt.Println("APIkey")
 	tokenAPI = resp.Header.Get("X-Auth-Token")
 	fmt.Println(tokenAPI)
-	time.Sleep(400 * time.Second)
+	//time.Sleep(40 * time.Second)
 }
