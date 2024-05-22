@@ -4,9 +4,15 @@ import (
 	"context"
 	"fmt"
 	gui "github.com/grupawp/warships-gui/v2"
+	"time"
 )
 
+var PlayerCoords [20]string
+
 func SetShips() {
+	fmt.Println("Czas ustawić statki...")
+	time.Sleep(4 * time.Second)
+
 	ui := gui.NewGUI(true)
 
 	txt := gui.NewText(1, 1, "Press on any coordinate to log it.", nil)
@@ -31,7 +37,6 @@ func SetShips() {
 				if selectedX[i] == x && selectedY[i] == y {
 					selectedX = append(selectedX[:i], selectedX[i+1:]...)
 					selectedY = append(selectedY[:i], selectedY[i+1:]...)
-					//states[selectedX[i]][selectedY[i]] = gui.Empty
 					isSelected = true
 				}
 			}
@@ -43,9 +48,15 @@ func SetShips() {
 			for i := 0; i < len(selectedX); i++ {
 				states[selectedX[i]][selectedY[i]] = gui.Ship
 			}
-			txt.SetText(fmt.Sprintf("Coordinate: %s %s %d", char, intsToCoord(x, y), y))
+			txt.SetText(fmt.Sprintf("Coordinate: %s ", char))
 			board.SetStates(states)
 			ui.Log("Coordinate: %s", char) // logs are displayed after the game exits
+			if len(selectedX) == 20 {
+				break
+			}
+		}
+		for i := 0; i < 20; i++ {
+			PlayerCoords[i] = intsToCoord(selectedX[i], selectedY[i])
 		}
 	}()
 	ui.Start(context.TODO(), nil)

@@ -2,17 +2,23 @@ package main
 
 import (
 	"ships/advancedBoard"
+	"ships/askPlayer"
+	"ships/controllerHTTP"
+	"time"
 )
 
-var BASIC_URL = "https://go-pjatk-server.fly.dev/api"
-
 func main() {
-	//askPlayer.PlayerNick()
-	//askPlayer.PlayerDesc()
-	//askPlayer.PlayerPlayWithBot()
-
+	askPlayer.PlayerNick()
+	askPlayer.PlayerDesc()
+	controllerHTTP.WaitingList()
+	askPlayer.ChooseOp()
 	advancedBoard.SetShips()
-
+	controllerHTTP.Connect()
+	controllerHTTP.GameStatus()
+	for controllerHTTP.Status != "game_in_progress" {
+		time.Sleep(1 * time.Second)
+		controllerHTTP.GameStatus()
+	}
 	//	for {
 	//		setShips()
 	//		connect()

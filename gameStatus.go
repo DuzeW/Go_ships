@@ -21,7 +21,7 @@ var isEnded bool = false
 var lastGameStatus string
 
 func gameStatus() bool {
-	URL := BASIC_URL + "/game"
+	URL := "/game"
 	req, err := http.NewRequest("GET", URL, nil)
 	if err != nil {
 		fmt.Println("Błąd tworzenia zapytania:", err)

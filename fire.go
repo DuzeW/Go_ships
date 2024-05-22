@@ -12,7 +12,7 @@ import (
 var shotsR []string
 
 func fire() {
-	URL := BASIC_URL + "/game/fire"
+	URL := "/game/fire"
 	isCorrect, coord := getCoord()
 	for !isCorrect {
 		isCorrect, coord = getCoord()
@@ -63,7 +63,7 @@ func fire() {
 		missAround()
 	}
 }
-func isShotted(){
+func isShotted() {
 
 }
 func missAround() {
