@@ -9,7 +9,7 @@ import (
 var reqBoard []string
 
 func checkBoard() {
-	URL := BASIC_URL + "/game/board"
+	URL := "/game/board"
 	req, err := http.NewRequest("GET", URL, nil)
 	if err != nil {
 		fmt.Println("Błąd tworzenia zapytania:", err)
