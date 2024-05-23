@@ -10,7 +10,10 @@ import (
 )
 
 func main() {
-
+	askPlayer.ShouldShowRanking()
+	if askPlayer.ShowRanking {
+		controllerHTTP.GetPlayerStats()
+	}
 	askPlayer.PlayerNick()
 	askPlayer.PlayerDesc()
 	controllerHTTP.WaitingList()
@@ -19,11 +22,14 @@ func main() {
 	controllerHTTP.Connect()
 	controllerHTTP.GameStatus()
 	for controllerHTTP.Status != "game_in_progress" {
+		controllerHTTP.Refresh()
 		time.Sleep(1 * time.Second)
 		controllerHTTP.GameStatus()
 		fmt.Println("Oczekiwanie na grę")
 	}
 	game.ShowBoards()
+	fmt.Println(controllerHTTP.LastGameStatus)
+	time.Sleep(5 * time.Second)
 
 	//	for {
 	//		setShips()

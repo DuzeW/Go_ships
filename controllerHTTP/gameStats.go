@@ -19,6 +19,7 @@ type GameResponse struct {
 var LastGameStatus string
 var Status string
 var OppShots []string
+var ShouldFire bool
 
 func GameStatus() {
 	URL := basicURL + "/game"
@@ -44,4 +45,5 @@ func GameStatus() {
 	Status = data.GameStatus
 	LastGameStatus = data.LastGameStatus
 	OppShots = data.OppShots
+	ShouldFire = data.ShouldFire
 }

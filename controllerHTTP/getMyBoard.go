@@ -10,8 +10,6 @@ type BoardResponse struct {
 	Board []string `json:"board"`
 }
 
-var MyBoard []string
-
 func GetMyBoard() []string {
 	URL := basicURL + "/game/board"
 	req, err := http.NewRequest("GET", URL, nil)
