@@ -28,6 +28,7 @@ func main() {
 		fmt.Println("Oczekiwanie na grę")
 	}
 	game.ShowBoards()
+	controllerHTTP.AbandonGame()
 	fmt.Println(controllerHTTP.LastGameStatus)
 	time.Sleep(5 * time.Second)
 

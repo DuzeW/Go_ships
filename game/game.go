@@ -67,7 +67,7 @@ func ShowBoards() {
 					x, y := coordToInts(hit[i])
 					opStates[x][y] = gui.Hit
 				}
-				txt.SetText(fmt.Sprintf("Twój ruch Coordinate: %s %s", char, result))
+				txt.SetText(fmt.Sprintf("Twój ruch Coordinate: %s %s Pozostały czas %d", char, result, controllerHTTP.Timer))
 				opBoard.SetStates(opStates)
 				ui.Log("Coordinate: %s", char)
 			} else {

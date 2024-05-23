@@ -20,6 +20,7 @@ var LastGameStatus string
 var Status string
 var OppShots []string
 var ShouldFire bool
+var Timer int
 
 func GameStatus() {
 	URL := basicURL + "/game"
@@ -46,4 +47,5 @@ func GameStatus() {
 	LastGameStatus = data.LastGameStatus
 	OppShots = data.OppShots
 	ShouldFire = data.ShouldFire
+	Timer = data.Timer
 }
