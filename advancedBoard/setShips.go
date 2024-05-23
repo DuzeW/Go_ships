@@ -50,7 +50,7 @@ func SetShips() {
 			}
 			txt.SetText(fmt.Sprintf("Coordinate: %s ", char))
 			board.SetStates(states)
-			ui.Log("Coordinate: %s", char) // logs are displayed after the game exits
+			ui.Log("Coordinate: %s", char)
 			if len(selectedX) == 20 {
 				break
 			}

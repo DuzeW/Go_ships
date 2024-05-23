@@ -12,7 +12,6 @@ var ShowRanking bool
 func ShouldShowRanking() {
 	reader := bufio.NewReader(os.Stdin)
 	badAns := true
-
 	for badAns {
 		fmt.Println("Czy chceszzobaczyć ranking graczy?(T/N)")
 		ans, err := reader.ReadString('\n')
