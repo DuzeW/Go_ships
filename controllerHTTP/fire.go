@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"time"
 )
 
 func Fire(coord string) string {
 	URL := basicURL + "/game/fire"
-
 	data := map[string]string{"coord": coord}
 	jsonData, err := json.Marshal(data)
 	if err != nil {
@@ -42,5 +42,13 @@ func Fire(coord string) string {
 		fmt.Println("Błąd parsowania odpowiedzi:", err)
 		return ""
 	}
-	return result["result"]
+	str := ""
+	if result["result"] == "miss" || result["result"] == "hit" || result["result"] == "sunk" {
+		return result["result"]
+	} else {
+		time.Sleep(1 * time.Second)
+		Fire(coord)
+		str = "Byłem w els"
+	}
+	return "błąd strzału" + str
 }

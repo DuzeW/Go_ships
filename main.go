@@ -10,15 +10,20 @@ import (
 )
 
 func main() {
-	askPlayer.ShouldShowRanking()
-	if askPlayer.ShowRanking {
-		controllerHTTP.GetPlayerStats()
-	}
-	askPlayer.PlayerNick()
-	askPlayer.PlayerDesc()
-	controllerHTTP.WaitingList()
-	askPlayer.ChooseOp()
-	advancedBoard.SetShips()
+	//askPlayer.ShouldShowRanking()
+	//if askPlayer.ShowRanking {
+	//	controllerHTTP.GetPlayerStats()
+	//}
+	//askPlayer.PlayerNick()
+	askPlayer.Nick = "t"
+	//askPlayer.PlayerDesc()
+	askPlayer.Desc = "t"
+	//controllerHTTP.WaitingList()
+	//askPlayer.ChooseOp()
+	askPlayer.OpNick = ""
+	askPlayer.PlayWithBot = true
+	//advancedBoard.SetShips()
+	advancedBoard.PlayerCoords = [20]string{"A1", "A2", "A3", "A4", "A6", "A7", "A8", "C6", "C7", "C8", "D1", "D2", "F1", "F2", "H1", "H2", "H10", "J5", "J7", "J9"}
 	controllerHTTP.Connect()
 	controllerHTTP.GameStatus()
 	for controllerHTTP.Status != "game_in_progress" {
@@ -32,38 +37,4 @@ func main() {
 	fmt.Println(controllerHTTP.LastGameStatus)
 	time.Sleep(5 * time.Second)
 
-	//	for {
-	//		setShips()
-	//		connect()
-	//		gameStatusFail := gameStatus()
-	//		for gameStatusFail == true {
-	//			time.Sleep(1 * time.Second)
-	//			gameStatusFail = gameStatus()
-	//		}
-	//		for !isEnded {
-	//			fire()
-	//			checkBoard()
-	//			gameStatus()
-	//			board.Display()
-	//		}
-	//		fmt.Println("Gra dobiegła końca wynik to:", lastGameStatus)
-	//		playAgain()
-	//	}
-	//
-	//}
-	//func playAgain() {
-	//	reader := bufio.NewReader(os.Stdin)
-	//	for {
-	//		fmt.Println("Czy chcesz zagrać ponownie?(T/N)")
-	//		again, err := reader.ReadString('\n')
-	//		if err != nil {
-	//			fmt.Println("Błąd podczas wpisywania:", err)
-	//		}
-	//		again = strings.TrimSpace(again)
-	//		if again == "T" || again == "t" {
-	//		}
-	//		if again == "N" || again == "n" {
-	//			os.Exit(0)
-	//		}
-	//	}
 }
