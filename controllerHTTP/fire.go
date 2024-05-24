@@ -17,38 +17,48 @@ func Fire(coord string) string {
 		fmt.Println("Błąd podczas konwersji danych na JSON:", err)
 		return ""
 	}
-	req, err := http.NewRequest("POST", URL, bytes.NewBuffer(jsonData))
-	if err != nil {
-		fmt.Println("Błąd tworzenia żądania:", err)
-		return ""
+
+	allowedResponses := map[string]bool{
+		"miss": true,
+		"sunk": true,
+		"hit":  true,
 	}
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("X-Auth-Token", tokenAPI)
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		fmt.Println("Błąd wykonania żądania:", err)
-		return ""
-	}
-	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Println("Błąd odczytu odpowiedzi:", err)
-		return ""
-	}
-	var result map[string]string
-	err = json.Unmarshal(body, &result)
-	if err != nil {
-		fmt.Println("Błąd parsowania odpowiedzi:", err)
-		return ""
-	}
-	str := ""
-	if result["result"] == "miss" || result["result"] == "hit" || result["result"] == "sunk" {
-		return result["result"]
-	} else {
+
+	for i := 0; i < 3; i++ {
+		req, err := http.NewRequest("POST", URL, bytes.NewBuffer(jsonData))
+		if err != nil {
+			return "Błąd tworzenia żądania"
+		}
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("X-Auth-Token", tokenAPI)
+
+		client := &http.Client{}
+		resp, err := client.Do(req)
+		if err != nil {
+			return "Błąd wykonania żądania:"
+		} else {
+			defer resp.Body.Close()
+			body, err := ioutil.ReadAll(resp.Body)
+			if err != nil {
+				return "Błąd odczytu odpowiedzi"
+			} else {
+				var result map[string]string
+				err = json.Unmarshal(body, &result)
+				if err != nil {
+					return "Błąd parsowania odpowiedzi"
+				} else {
+					if msg, exists := result["result"]; exists {
+						if allowedResponses[msg] {
+							return msg
+						} else {
+							return "Nieoczekiwana odpowiedź"
+						}
+					}
+				}
+			}
+		}
 		time.Sleep(1 * time.Second)
-		Fire(coord)
-		str = "Byłem w els"
 	}
-	return "błąd strzału" + str
+
+	return "błąd strzału"
 }
