@@ -38,6 +38,7 @@ func ShowBoards() {
 		for {
 			controllerHTTP.GameStatus()
 			//if controllerHTTP.ShouldFire {
+// do something to make it working
 			char := opBoard.Listen(context.TODO())
 
 			result := controllerHTTP.Fire(char)
