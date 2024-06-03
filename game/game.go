@@ -36,11 +36,9 @@ func ShowBoards() {
 	go func() {
 		controllerHTTP.GameStatus()
 		for {
-			controllerHTTP.GameStatus()
-			//if controllerHTTP.ShouldFire {
-// do something to make it working
-			char := opBoard.Listen(context.TODO())
 
+			controllerHTTP.GameStatus()
+			char := opBoard.Listen(context.TODO())
 			result := controllerHTTP.Fire(char)
 			if result == "miss" {
 				miss = append(miss, char)
@@ -71,13 +69,10 @@ func ShowBoards() {
 			txt.SetText(fmt.Sprintf("Twój ruch Coordinate: %s %s Pozostały czas %d Skuteczność strzałów: dobra", char, result, controllerHTTP.Timer))
 			opBoard.SetStates(opStates)
 			ui.Log("Coordinate: %s", char)
-			//} else {
-			//txt.SetText(fmt.Sprintf("Ruch przeciwnika"))
 			for i := 0; i < len(controllerHTTP.OppShots); i++ {
 				x, y := coordToInts(controllerHTTP.OppShots[i])
 				states[x][y] = gui.Miss
 			}
-
 			for i := 0; i < len(controllerHTTP.OppShots); i++ {
 				x, y := coordToInts(controllerHTTP.OppShots[i])
 				for j := 0; j < len(myCoords); j++ {
@@ -87,12 +82,10 @@ func ShowBoards() {
 				}
 			}
 			board.SetStates(states)
-			//}
 			controllerHTTP.GameStatus()
 			if controllerHTTP.Status != "game_in_progress" {
 				break
 			}
-			//time.Sleep(1 * time.Second)
 		}
 	}()
 	ui.Start(context.TODO(), nil)
