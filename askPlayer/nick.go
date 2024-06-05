@@ -11,7 +11,7 @@ var Nick string
 
 func PlayerNick() {
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Println("Wpisz nick:")
+	fmt.Println("Wpisz swój nick:")
 	nickInput, err := reader.ReadString('\n')
 	if err != nil {
 		fmt.Println("Błąd podczas wpisywaniu nicku:", err)

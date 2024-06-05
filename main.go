@@ -10,20 +10,20 @@ import (
 )
 
 func main() {
-	//askPlayer.ShouldShowRanking()
-	//if askPlayer.ShowRanking {
-	//	controllerHTTP.GetPlayerStats()
-	//}
-	//askPlayer.PlayerNick()
-	askPlayer.Nick = "t"
-	//askPlayer.PlayerDesc()
-	askPlayer.Desc = "t"
-	//controllerHTTP.WaitingList()
-	//askPlayer.ChooseOp()
-	askPlayer.OpNick = ""
-	askPlayer.PlayWithBot = true
-	//advancedBoard.SetShips()
-	advancedBoard.PlayerCoords = [20]string{"A1", "A2", "A3", "A4", "A6", "A7", "A8", "C6", "C7", "C8", "D1", "D2", "F1", "F2", "H1", "H2", "H10", "J5", "J7", "J9"}
+	askPlayer.ShouldShowRanking()
+	if askPlayer.ShowRanking {
+		controllerHTTP.GetPlayerStats()
+	}
+	askPlayer.PlayerNick()
+	//askPlayer.Nick = "t"
+	askPlayer.PlayerDesc()
+	//askPlayer.Desc = "t"
+	controllerHTTP.WaitingList()
+	askPlayer.ChooseOp()
+	//askPlayer.OpNick = ""
+	//askPlayer.PlayWithBot = true
+	advancedBoard.SetShips()
+	//advancedBoard.PlayerCoords = [20]string{"A1", "A2", "A3", "A4", "A6", "A7", "A8", "C6", "C7", "C8", "D1", "D2", "F1", "F2", "H1", "H2", "H10", "J5", "J7", "J9"}
 	controllerHTTP.Connect()
 	controllerHTTP.GameStatus()
 	for controllerHTTP.Status != "game_in_progress" {

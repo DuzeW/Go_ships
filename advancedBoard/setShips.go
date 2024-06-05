@@ -15,9 +15,9 @@ func SetShips() {
 
 	ui := gui.NewGUI(true)
 
-	txt := gui.NewText(1, 1, "Press on any coordinate to log it.", nil)
+	txt := gui.NewText(1, 1, "Naciśnij pola gdzie chcesz ustawić statki", nil)
 	ui.Draw(txt)
-	ui.Draw(gui.NewText(1, 2, "Press Ctrl+C to exit", nil))
+	ui.Draw(gui.NewText(1, 2, "Naciśnij Ctrl+C aby zatwierdzić", nil))
 
 	board := gui.NewBoard(1, 4, nil)
 	ui.Draw(board)
