@@ -11,7 +11,7 @@ import (
 func ShowBoards() {
 	ui := gui.NewGUI(true)
 
-	txt := gui.NewText(1, 1, "Press on any coordinate to log it.", nil)
+	txt := gui.NewText(1, 1, "", nil)
 	takenCoords := gui.NewText(1, 3, "Wybierz miejsce gdzie chcesz oddać strzał", nil)
 	ui.Draw(txt)
 	ui.Draw(takenCoords)
@@ -36,12 +36,12 @@ func ShowBoards() {
 
 	var miss []string
 	var hit []string
+	var checked []string
 	go func() {
 		for {
 			if controllerHTTP.Timer > 0 {
 				txt.SetText(fmt.Sprintf("Czas na ruch %d", controllerHTTP.Timer))
 			}
-			//pomyslec co tu dac jakiego else
 			time.Sleep(1 * time.Second)
 		}
 	}()
@@ -50,6 +50,17 @@ func ShowBoards() {
 			if controllerHTTP.ShouldFire {
 				char := opBoard.Listen(context.TODO())
 				ui.Log("Coordinate: %s", char)
+				isAlreadyChecked := false
+				for i := 0; i < len(checked); i++ {
+					if checked[i] == char {
+						isAlreadyChecked = true
+					}
+				}
+				if isAlreadyChecked == false {
+					checked = append(checked, char)
+				} else {
+					continue
+				}
 				result := controllerHTTP.Fire(char)
 				if result == "miss" {
 					miss = append(miss, char)
