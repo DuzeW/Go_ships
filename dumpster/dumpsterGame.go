@@ -31,6 +31,7 @@ for i := 0; i < len(hit); i++ {
 x, y := coordToInts(hit[i])
 opStates[x][y] = gui.Hit
 }
+
 txt.SetText(fmt.Sprintf("Twój ruch Coordinate: %s %s Pozostały czas %d Skuteczność strzałów: dobra", char, result, controllerHTTP.Timer))
 opBoard.SetStates(opStates)
 ui.Log("Coordinate: %s", char)

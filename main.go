@@ -35,6 +35,6 @@ func main() {
 	game.ShowBoards()
 	controllerHTTP.AbandonGame()
 	fmt.Println(controllerHTTP.LastGameStatus)
-	time.Sleep(5 * time.Second)
+	time.Sleep(500 * time.Second)
 
 }
