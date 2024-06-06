@@ -10,14 +10,15 @@ import (
 )
 
 func main() {
-	askPlayer.ShouldShowRanking()
-	if askPlayer.ShowRanking {
-		controllerHTTP.GetPlayerStats()
-	}
+	//20 max na nick brak max na desc
 	askPlayer.PlayerNick()
 	//askPlayer.Nick = "t"
 	askPlayer.PlayerDesc()
 	//askPlayer.Desc = "t"
+	askPlayer.ShouldShowRanking()
+	if askPlayer.ShowRanking {
+		controllerHTTP.GetPlayerStats()
+	}
 	controllerHTTP.WaitingList()
 	askPlayer.ChooseOp()
 	//askPlayer.OpNick = ""

@@ -13,7 +13,7 @@ func ShouldShowRanking() {
 	reader := bufio.NewReader(os.Stdin)
 	badAns := true
 	for badAns {
-		fmt.Println("Czy chceszzobaczyć ranking graczy?(T/N)")
+		fmt.Println("\nCzy chcesz zobaczyć ranking graczy?(T/N)")
 		ans, err := reader.ReadString('\n')
 		if err != nil {
 			fmt.Println("Błąd podczas wpisywaniu:", err)

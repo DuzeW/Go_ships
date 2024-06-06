@@ -41,8 +41,12 @@ func ShowBoards() {
 	go func() {
 		for {
 			if controllerHTTP.Timer > 0 {
-				shotEffectiveness = 100 * float32(len(hit)) / float32(len(checked))
-				txt.SetText(fmt.Sprintf("Czas na ruch %d twoja skuteczność wynosi: %.2f %%", controllerHTTP.Timer, shotEffectiveness))
+				if len(checked) < 1 {
+					txt.SetText(fmt.Sprintf("Czas na ruch %d", controllerHTTP.Timer))
+				} else {
+					shotEffectiveness = 100 * float32(len(hit)) / float32(len(checked))
+					txt.SetText(fmt.Sprintf("Czas na ruch %d twoja skuteczność wynosi: %.2f %%", controllerHTTP.Timer, shotEffectiveness))
+				}
 			}
 			time.Sleep(1 * time.Second)
 		}
