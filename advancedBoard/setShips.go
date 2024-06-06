@@ -8,6 +8,8 @@ import (
 )
 
 var PlayerCoords [20]string
+var selectedX []int
+var selectedY []int
 
 func SetShips() {
 	fmt.Println("Czas ustawić statki...")
@@ -15,23 +17,20 @@ func SetShips() {
 
 	ui := gui.NewGUI(true)
 
-	txt := gui.NewText(1, 1, "Naciśnij pola gdzie chcesz ustawić statki", nil)
-	ui.Draw(txt)
-	ui.Draw(gui.NewText(1, 2, "Naciśnij Ctrl+C aby zatwierdzić", nil))
+	txt1 := gui.NewText(1, 1, "Naciśnij pola gdzie chcesz ustawić statki", nil)
+	ui.Draw(txt1)
+	txt2 := gui.NewText(1, 2, "", nil)
+	ui.Draw(txt2)
 
 	board := gui.NewBoard(1, 4, nil)
 	ui.Draw(board)
 
 	go func() {
-		x := 1
-		y := 1
-		var selectedX []int
-		var selectedY []int
 		for {
 
 			states := [10][10]gui.State{}
 			char := board.Listen(context.TODO())
-			x, y = coordToInts(char)
+			x, y := coordToInts(char)
 			isSelected := false
 			for i := 0; i < len(selectedX); i++ {
 				if selectedX[i] == x && selectedY[i] == y {
@@ -48,10 +47,11 @@ func SetShips() {
 			for i := 0; i < len(selectedX); i++ {
 				states[selectedX[i]][selectedY[i]] = gui.Ship
 			}
-			txt.SetText(fmt.Sprintf("Coordinate: %s ", char))
+			txt1.SetText(fmt.Sprintf("Wybrano pole: %s ", char))
 			board.SetStates(states)
 			ui.Log("Coordinate: %s", char)
-			if len(selectedX) == 20 {
+			if setAnalyzer() {
+				txt1.SetText(fmt.Sprintf("Statki ustawiono prawidłowo naciśnij Ctrl + C aby przejść dalej"))
 				break
 			}
 		}
@@ -72,4 +72,61 @@ func intsToCoord(x, y int) string {
 		return string(x+65) + "10"
 	}
 	return string(x+65) + string(y+49)
+}
+
+func setAnalyzer() bool {
+	if len(selectedX) != 20 {
+		return false
+	}
+	if isCorrectShip1() {
+		return true
+	}
+	return false
+
+}
+func isCorrectShip2() bool {
+	shipCounter := 0
+	for i := 0; i < 20; i++ {
+		result, _, _ := isShipAround(selectedX[i], selectedY[i])
+		if result == true {
+			shipCounter++
+		}
+	}
+	if shipCounter == 6 {
+		return true
+	}
+	return false
+}
+
+func isCorrectShip1() bool {
+	shipCounter := 0
+	for i := 0; i < 20; i++ {
+		result, _, _ := isShipAround(selectedX[i], selectedY[i])
+		if result == false {
+			shipCounter++
+		}
+	}
+	if shipCounter == 4 {
+		return true
+	}
+	return false
+}
+
+func isShipAround(x int, y int) (bool, int, int) {
+	for i := -1; i < 2; i++ {
+		if i == 0 {
+			continue
+		}
+		for j := 0; j < 20; j++ {
+			if selectedY[j] == y && selectedX[j] == x+i {
+				return true, x + i, y
+			}
+		}
+		for j := 0; j < 20; j++ {
+			if selectedX[j] == x && selectedY[j] == y+i {
+				return true, x, y + i
+			}
+		}
+	}
+	return false, 0, 0
 }
