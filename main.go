@@ -3,24 +3,22 @@ package main
 import (
 	"fmt"
 	"ships/advancedBoard"
-	"ships/askPlayer"
 	"ships/controllerHTTP"
 	"ships/game"
 	"time"
 )
 
 func main() {
-	//20 max na nick brak max na desc
-	askPlayer.PlayerNick()
+	//askPlayer.PlayerNick()
 	//askPlayer.Nick = "t"
-	askPlayer.PlayerDesc()
+	//askPlayer.PlayerDesc()
 	//askPlayer.Desc = "t"
-	askPlayer.ShouldShowRanking()
-	if askPlayer.ShowRanking {
-		controllerHTTP.GetPlayerStats()
-	}
-	controllerHTTP.WaitingList()
-	askPlayer.ChooseOp()
+	//askPlayer.ShouldShowRanking()
+	//if askPlayer.ShowRanking {
+	//	controllerHTTP.GetPlayerStats()
+	//}
+	//controllerHTTP.WaitingList()
+	//askPlayer.ChooseOp()
 	//askPlayer.OpNick = ""
 	//askPlayer.PlayWithBot = true
 	advancedBoard.SetShips()

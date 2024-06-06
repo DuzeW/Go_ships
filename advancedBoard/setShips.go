@@ -10,10 +10,13 @@ import (
 var PlayerCoords [20]string
 var selectedX []int
 var selectedY []int
+var ships = []int{4, 3, 3, 2, 2, 2, 1, 1, 1, 1}
+var LockX []int
+var LockY []int
 
 func SetShips() {
 	fmt.Println("Czas ustawić statki...")
-	time.Sleep(4 * time.Second)
+	time.Sleep(3 * time.Second)
 
 	ui := gui.NewGUI(true)
 
@@ -31,7 +34,11 @@ func SetShips() {
 			states := [10][10]gui.State{}
 			char := board.Listen(context.TODO())
 			x, y := coordToInts(char)
+			//if x == 0 {
+			//	continue
+			//}
 			isSelected := false
+			//odznaczanie pola
 			for i := 0; i < len(selectedX); i++ {
 				if selectedX[i] == x && selectedY[i] == y {
 					selectedX = append(selectedX[:i], selectedX[i+1:]...)
@@ -39,6 +46,11 @@ func SetShips() {
 					isSelected = true
 				}
 			}
+			isconnected, _, _ := isShipAround(x, y)
+			if !isconnected {
+				continue
+			}
+			//zaznaczanie
 			if len(selectedX) < 20 && isSelected == false {
 				selectedX = append(selectedX, x)
 				selectedY = append(selectedY, y)

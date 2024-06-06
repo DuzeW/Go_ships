@@ -18,4 +18,8 @@ func PlayerDesc() {
 		return
 	}
 	Desc = strings.TrimSpace(descInput)
+	if len(Desc) > 100 {
+		fmt.Println("Zła długość opisu")
+		PlayerDesc()
+	}
 }

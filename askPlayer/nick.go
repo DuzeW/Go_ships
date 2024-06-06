@@ -18,4 +18,8 @@ func PlayerNick() {
 		return
 	}
 	Nick = strings.TrimSpace(nickInput)
+	if len(Nick) > 20 || len(Nick) < 1 {
+		fmt.Println("Zła długość nicku")
+		PlayerNick()
+	}
 }
