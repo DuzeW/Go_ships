@@ -46,10 +46,6 @@ func SetShips() {
 					isSelected = true
 				}
 			}
-			isconnected, _, _ := isShipAround(x, y)
-			if !isconnected {
-				continue
-			}
 			//zaznaczanie
 			if len(selectedX) < 20 && isSelected == false {
 				selectedX = append(selectedX, x)
