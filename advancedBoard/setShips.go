@@ -11,7 +11,6 @@ var PlayerCoords [20]string
 var selectedX []int
 var selectedY []int
 var ships = []int{4, 3, 3, 2, 2, 2, 1, 1, 1, 1}
-var shipLockedXY [][][]int
 
 func SetShips() {
 	fmt.Println("Czas ustawić statki...")
@@ -29,14 +28,14 @@ func SetShips() {
 
 	go func() {
 		for {
-
+			states := [10][10]gui.State{}
 			for k := 0; k < len(ships); k++ {
 				for j := 0; j < ships[k]; j++ {
 					if j < 0 {
 						k--
 						j = ships[k] - 1
 					}
-					states := [10][10]gui.State{}
+					states = [10][10]gui.State{}
 					txt1.SetText(fmt.Sprintf("Ustawiasz statek długości %d część %d", ships[k], j+1))
 
 					char := board.Listen(context.TODO())
@@ -65,6 +64,7 @@ func SetShips() {
 					board.SetStates(states)
 					ui.Log("Coordinate: %s", char)
 				}
+				//lockX, lockY := lock()
 
 			}
 			txt1.SetText(fmt.Sprintf("Statki ustawiono prawidłowo naciśnij Ctrl + C aby przejść dalej"))
@@ -75,6 +75,29 @@ func SetShips() {
 		}
 	}()
 	ui.Start(context.TODO(), nil)
+}
+func lock() ([]int, []int) {
+	var lockX []int
+	var lockY []int
+	for l := 0; l < len(selectedX); l++ {
+		for i := -1; i <= 1; i++ {
+			if i == 0 {
+				continue
+			}
+			for j := -1; j <= 1; j++ {
+				if j == 0 {
+					continue
+				}
+				for k := 0; k < len(selectedX); k++ {
+					if selectedX[k] != selectedX[l+i] && selectedY[k] != selectedY[l+j] {
+						lockX = append(lockX, selectedX[l+i])
+						lockY = append(lockY, selectedY[l+j])
+					}
+				}
+			}
+		}
+	}
+	return lockX, lockY
 }
 func whichNumberInSelected(k int) int {
 	i := 0
