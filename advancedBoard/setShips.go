@@ -11,8 +11,7 @@ var PlayerCoords [20]string
 var selectedX []int
 var selectedY []int
 var ships = []int{4, 3, 3, 2, 2, 2, 1, 1, 1, 1}
-var LockX []int
-var LockY []int
+var shipLockedXY [][][]int
 
 func SetShips() {
 	fmt.Println("Czas ustawić statki...")
@@ -31,43 +30,59 @@ func SetShips() {
 	go func() {
 		for {
 
-			states := [10][10]gui.State{}
-			char := board.Listen(context.TODO())
-			x, y := coordToInts(char)
-			//if x == 0 {
-			//	continue
-			//}
-			isSelected := false
-			//odznaczanie pola
-			for i := 0; i < len(selectedX); i++ {
-				if selectedX[i] == x && selectedY[i] == y {
-					selectedX = append(selectedX[:i], selectedX[i+1:]...)
-					selectedY = append(selectedY[:i], selectedY[i+1:]...)
-					isSelected = true
-				}
-			}
-			//zaznaczanie
-			if len(selectedX) < 20 && isSelected == false {
-				selectedX = append(selectedX, x)
-				selectedY = append(selectedY, y)
-			}
+			for k := 0; k < len(ships); k++ {
+				for j := 0; j < ships[k]; j++ {
+					if j < 0 {
+						k--
+						j = ships[k] - 1
+					}
+					states := [10][10]gui.State{}
+					txt1.SetText(fmt.Sprintf("Ustawiasz statek długości %d część %d", ships[k], j+1))
 
-			for i := 0; i < len(selectedX); i++ {
-				states[selectedX[i]][selectedY[i]] = gui.Ship
+					char := board.Listen(context.TODO())
+					x, y := coordToInts(char)
+
+					isSelected := false
+					//odznaczanie pola
+					for i := 0; i < len(selectedX); i++ {
+						if selectedX[i] == x && selectedY[i] == y {
+							selectedX = append(selectedX[:i], selectedX[i+1:]...)
+							selectedY = append(selectedY[:i], selectedY[i+1:]...)
+							isSelected = true
+							j = j - 2
+						}
+					}
+					//zaznaczanie
+					if len(selectedX) < 20 && isSelected == false {
+						selectedX = append(selectedX, x)
+						selectedY = append(selectedY, y)
+					}
+
+					for i := 0; i < len(selectedX); i++ {
+						states[selectedX[i]][selectedY[i]] = gui.Ship
+					}
+					txt1.SetText(fmt.Sprintf("Wybrano pole: %s ", char))
+					board.SetStates(states)
+					ui.Log("Coordinate: %s", char)
+				}
+
 			}
-			txt1.SetText(fmt.Sprintf("Wybrano pole: %s ", char))
-			board.SetStates(states)
-			ui.Log("Coordinate: %s", char)
-			if setAnalyzer() {
-				txt1.SetText(fmt.Sprintf("Statki ustawiono prawidłowo naciśnij Ctrl + C aby przejść dalej"))
-				break
-			}
+			txt1.SetText(fmt.Sprintf("Statki ustawiono prawidłowo naciśnij Ctrl + C aby przejść dalej"))
+			break
 		}
 		for i := 0; i < 20; i++ {
 			PlayerCoords[i] = intsToCoord(selectedX[i], selectedY[i])
 		}
 	}()
 	ui.Start(context.TODO(), nil)
+}
+func whichNumberInSelected(k int) int {
+	i := 0
+	for k > 0 {
+		i += ships[k-1]
+		k--
+	}
+	return i
 }
 func coordToInts(coord string) (int, int) {
 	if len(coord) == 3 {
