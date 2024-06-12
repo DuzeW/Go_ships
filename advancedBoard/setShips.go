@@ -11,6 +11,8 @@ var PlayerCoords [20]string
 var selectedX []int
 var selectedY []int
 var ships = []int{4, 3, 3, 2, 2, 2, 1, 1, 1, 1}
+var lockX []int
+var lockY []int
 
 func SetShips() {
 	fmt.Println("Czas ustawić statki...")
@@ -31,41 +33,43 @@ func SetShips() {
 			states := [10][10]gui.State{}
 			for k := 0; k < len(ships); k++ {
 				for j := 0; j < ships[k]; j++ {
-					if j < 0 {
-						k--
-						j = ships[k] - 1
-					}
 					states = [10][10]gui.State{}
 					txt1.SetText(fmt.Sprintf("Ustawiasz statek długości %d część %d", ships[k], j+1))
-
 					char := board.Listen(context.TODO())
 					x, y := coordToInts(char)
-
-					isSelected := false
-					//odznaczanie pola
+					badClick := false
 					for i := 0; i < len(selectedX); i++ {
 						if selectedX[i] == x && selectedY[i] == y {
-							selectedX = append(selectedX[:i], selectedX[i+1:]...)
-							selectedY = append(selectedY[:i], selectedY[i+1:]...)
-							isSelected = true
-							j = j - 2
+							badClick = true
+						}
+					}
+					for i := 0; i < len(lockX); i++ {
+						if lockX[i] == x && lockY[i] == y {
+							badClick = true
 						}
 					}
 					//zaznaczanie
-					if len(selectedX) < 20 && isSelected == false {
+					if len(selectedX) < 20 && !badClick {
 						selectedX = append(selectedX, x)
 						selectedY = append(selectedY, y)
 					}
-
+					if ships[k]-1 == j {
+						lock()
+					}
+					//rysowanie
 					for i := 0; i < len(selectedX); i++ {
 						states[selectedX[i]][selectedY[i]] = gui.Ship
 					}
-					txt1.SetText(fmt.Sprintf("Wybrano pole: %s ", char))
+					for i := 0; i < len(lockX); i++ {
+						states[lockX[i]][lockY[i]] = gui.Miss
+					}
 					board.SetStates(states)
 					ui.Log("Coordinate: %s", char)
+					//naprawienie petli
+					if badClick {
+						j--
+					}
 				}
-				//lockX, lockY := lock()
-
 			}
 			txt1.SetText(fmt.Sprintf("Statki ustawiono prawidłowo naciśnij Ctrl + C aby przejść dalej"))
 			break
@@ -76,28 +80,11 @@ func SetShips() {
 	}()
 	ui.Start(context.TODO(), nil)
 }
-func lock() ([]int, []int) {
-	var lockX []int
-	var lockY []int
+func lock() {
 	for l := 0; l < len(selectedX); l++ {
-		for i := -1; i <= 1; i++ {
-			if i == 0 {
-				continue
-			}
-			for j := -1; j <= 1; j++ {
-				if j == 0 {
-					continue
-				}
-				for k := 0; k < len(selectedX); k++ {
-					if selectedX[k] != selectedX[l+i] && selectedY[k] != selectedY[l+j] {
-						lockX = append(lockX, selectedX[l+i])
-						lockY = append(lockY, selectedY[l+j])
-					}
-				}
-			}
-		}
+		lockX = append(lockX, selectedX[l]+1)
+		lockY = append(lockY, selectedY[l]+1)
 	}
-	return lockX, lockY
 }
 func whichNumberInSelected(k int) int {
 	i := 0
