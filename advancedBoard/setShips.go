@@ -8,19 +8,16 @@ import (
 )
 
 var PlayerCoords [20]string
-var selectedX []int
-var selectedY []int
+var selectedXY [][]int
 var ships = []int{4, 3, 3, 2, 2, 2, 1, 1, 1, 1}
-var lockX []int
-var lockY []int
+var lockXY [][]int
 
 func ClearBoard() {
 	PlayerCoords = [20]string{}
-	selectedX = []int{}
-	selectedY = []int{}
-	lockX = []int{}
-	lockY = []int{}
+	selectedXY = [][]int{}
+	lockXY = [][]int{}
 }
+
 func SetShips() {
 	fmt.Println("Czas ustawić statki...")
 	time.Sleep(3 * time.Second)
@@ -45,13 +42,13 @@ func SetShips() {
 					char := board.Listen(context.TODO())
 					x, y := coordToInts(char)
 					badClick := false
-					for i := 0; i < len(lockX); i++ {
-						if lockX[i] == x && lockY[i] == y {
+					for i := 0; i < len(lockXY); i++ {
+						if lockXY[i][0] == x && lockXY[i][1] == y {
 							badClick = true
 						}
 					}
-					for i := 0; i < len(selectedX); i++ {
-						if selectedX[i] == x && selectedY[i] == y {
+					for i := 0; i < len(selectedXY); i++ {
+						if selectedXY[i][0] == x && selectedXY[i][1] == y {
 							badClick = true
 						}
 					}
@@ -60,19 +57,18 @@ func SetShips() {
 						continue
 					}
 					//zaznaczanie
-					if len(selectedX) < 20 && !badClick {
-						selectedX = append(selectedX, x)
-						selectedY = append(selectedY, y)
+					if len(selectedXY) < 20 && !badClick {
+						selectedXY = append(selectedXY, []int{x, y})
 					}
 					if ships[k]-1 == j {
 						lock()
 					}
 					//rysowanie
-					for i := 0; i < len(lockX); i++ {
-						states[lockX[i]][lockY[i]] = gui.Miss
+					for i := 0; i < len(lockXY); i++ {
+						states[lockXY[i][0]][lockXY[i][1]] = gui.Miss
 					}
-					for i := 0; i < len(selectedX); i++ {
-						states[selectedX[i]][selectedY[i]] = gui.Ship
+					for i := 0; i < len(selectedXY); i++ {
+						states[selectedXY[i][0]][selectedXY[i][1]] = gui.Ship
 					}
 					board.SetStates(states)
 					ui.Log("Coordinate: %s", char)
@@ -82,98 +78,35 @@ func SetShips() {
 			break
 		}
 		for i := 0; i < 20; i++ {
-			PlayerCoords[i] = intsToCoord(selectedX[i], selectedY[i])
+			PlayerCoords[i] = intsToCoord(selectedXY[i][0], selectedXY[i][1])
 		}
 	}()
 	ui.Start(context.TODO(), nil)
 }
+
 func lock() {
-	for l := 0; l < len(selectedX); l++ {
+	for l := 0; l < len(selectedXY); l++ {
 		for i := -1; i <= 1; i++ {
 			for j := -1; j <= 1; j++ {
-				if selectedX[l]+i > 9 || selectedX[l]+i < 0 || selectedY[l]+j > 9 || selectedY[l]+j < 0 {
+				if selectedXY[l][0]+i > 9 || selectedXY[l][0]+i < 0 || selectedXY[l][1]+j > 9 || selectedXY[l][1]+j < 0 {
 					continue
 				}
-				lockX = append(lockX, selectedX[l]+i)
-				lockY = append(lockY, selectedY[l]+j)
+				lockXY = append(lockXY, []int{selectedXY[l][0] + i, selectedXY[l][1] + j})
 			}
 		}
 	}
 }
-func whichNumberInSelected(k int) int {
-	i := 0
-	for k > 0 {
-		i += ships[k-1]
-		k--
-	}
-	return i
-}
+
 func coordToInts(coord string) (int, int) {
 	if len(coord) == 3 {
 		return int(coord[0] - 65), 9
 	}
 	return int(coord[0] - 65), int(coord[1] - 49)
 }
+
 func intsToCoord(x, y int) string {
 	if y == 9 {
 		return string(x+65) + "10"
 	}
 	return string(x+65) + string(y+49)
-}
-
-func setAnalyzer() bool {
-	if len(selectedX) != 20 {
-		return false
-	}
-	if isCorrectShip1() {
-		return true
-	}
-	return false
-
-}
-func isCorrectShip2() bool {
-	shipCounter := 0
-	for i := 0; i < 20; i++ {
-		result, _, _ := isShipAround(selectedX[i], selectedY[i])
-		if result == true {
-			shipCounter++
-		}
-	}
-	if shipCounter == 6 {
-		return true
-	}
-	return false
-}
-
-func isCorrectShip1() bool {
-	shipCounter := 0
-	for i := 0; i < 20; i++ {
-		result, _, _ := isShipAround(selectedX[i], selectedY[i])
-		if result == false {
-			shipCounter++
-		}
-	}
-	if shipCounter == 4 {
-		return true
-	}
-	return false
-}
-
-func isShipAround(x int, y int) (bool, int, int) {
-	for i := -1; i < 2; i++ {
-		if i == 0 {
-			continue
-		}
-		for j := 0; j < 20; j++ {
-			if selectedY[j] == y && selectedX[j] == x+i {
-				return true, x + i, y
-			}
-		}
-		for j := 0; j < 20; j++ {
-			if selectedX[j] == x && selectedY[j] == y+i {
-				return true, x, y + i
-			}
-		}
-	}
-	return false, 0, 0
 }
