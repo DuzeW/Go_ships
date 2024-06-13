@@ -39,3 +39,9 @@ func Connect() {
 	fmt.Println(tokenAPI)
 	//time.Sleep(40 * time.Second)
 }
+func IsConnect() bool {
+	if len(tokenAPI) < 5 {
+		return false
+	}
+	return true
+}

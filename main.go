@@ -23,8 +23,16 @@ func main() {
 	//askPlayer.OpNick = ""
 	//askPlayer.PlayWithBot = true
 	advancedBoard.SetShips()
-	//advancedBoard.PlayerCoords = [20]string{"A1", "A2", "A3", "A4", "A6", "A7", "A8", "C6", "C7", "C8", "D1", "D2", "F1", "F2", "H1", "H2", "H10", "J5", "J7", "J9"}
 	controllerHTTP.Connect()
+	for !controllerHTTP.IsConnect() {
+		fmt.Println("Spróbujmy jeszcze raz")
+		advancedBoard.ClearBoard()
+		time.Sleep(2 * time.Second)
+		advancedBoard.SetShips()
+		controllerHTTP.Connect()
+	}
+	//advancedBoard.PlayerCoords = [20]string{"A1", "A2", "A3", "A4", "A6", "A7", "A8", "C6", "C7", "C8", "D1", "D2", "F1", "F2", "H1", "H2", "H10", "J5", "J7", "J9"}
+
 	controllerHTTP.GameStatus()
 	for controllerHTTP.Status != "game_in_progress" {
 		controllerHTTP.Refresh()

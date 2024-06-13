@@ -14,6 +14,13 @@ var ships = []int{4, 3, 3, 2, 2, 2, 1, 1, 1, 1}
 var lockX []int
 var lockY []int
 
+func ClearBoard() {
+	PlayerCoords = [20]string{}
+	selectedX = []int{}
+	selectedY = []int{}
+	lockX = []int{}
+	lockY = []int{}
+}
 func SetShips() {
 	fmt.Println("Czas ustawić statki...")
 	time.Sleep(3 * time.Second)
