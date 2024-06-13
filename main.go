@@ -3,22 +3,23 @@ package main
 import (
 	"fmt"
 	"ships/advancedBoard"
+	"ships/askPlayer"
 	"ships/controllerHTTP"
 	"ships/game"
 	"time"
 )
 
 func main() {
-	//askPlayer.PlayerNick()
+	askPlayer.PlayerNick()
 	//askPlayer.Nick = "t"
-	//askPlayer.PlayerDesc()
+	askPlayer.PlayerDesc()
 	//askPlayer.Desc = "t"
-	//askPlayer.ShouldShowRanking()
-	//if askPlayer.ShowRanking {
-	//	controllerHTTP.GetPlayerStats()
-	//}
-	//controllerHTTP.WaitingList()
-	//askPlayer.ChooseOp()
+	askPlayer.ShouldShowRanking()
+	if askPlayer.ShowRanking {
+		controllerHTTP.GetPlayerStats()
+	}
+	controllerHTTP.WaitingList()
+	askPlayer.ChooseOp()
 	//askPlayer.OpNick = ""
 	//askPlayer.PlayWithBot = true
 	advancedBoard.SetShips()
@@ -32,8 +33,10 @@ func main() {
 		fmt.Println("Oczekiwanie na grę")
 	}
 	game.ShowBoards()
-	controllerHTTP.AbandonGame()
+	if controllerHTTP.LastGameStatus == "no_game" {
+		controllerHTTP.AbandonGame()
+	}
 	fmt.Println(controllerHTTP.LastGameStatus)
-	time.Sleep(500 * time.Second)
+	time.Sleep(5 * time.Second)
 
 }

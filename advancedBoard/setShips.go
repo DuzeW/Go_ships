@@ -38,15 +38,19 @@ func SetShips() {
 					char := board.Listen(context.TODO())
 					x, y := coordToInts(char)
 					badClick := false
+					for i := 0; i < len(lockX); i++ {
+						if lockX[i] == x && lockY[i] == y {
+							badClick = true
+						}
+					}
 					for i := 0; i < len(selectedX); i++ {
 						if selectedX[i] == x && selectedY[i] == y {
 							badClick = true
 						}
 					}
-					for i := 0; i < len(lockX); i++ {
-						if lockX[i] == x && lockY[i] == y {
-							badClick = true
-						}
+					if badClick {
+						j--
+						continue
 					}
 					//zaznaczanie
 					if len(selectedX) < 20 && !badClick {
@@ -57,18 +61,14 @@ func SetShips() {
 						lock()
 					}
 					//rysowanie
-					for i := 0; i < len(selectedX); i++ {
-						states[selectedX[i]][selectedY[i]] = gui.Ship
-					}
 					for i := 0; i < len(lockX); i++ {
 						states[lockX[i]][lockY[i]] = gui.Miss
 					}
+					for i := 0; i < len(selectedX); i++ {
+						states[selectedX[i]][selectedY[i]] = gui.Ship
+					}
 					board.SetStates(states)
 					ui.Log("Coordinate: %s", char)
-					//naprawienie petli
-					if badClick {
-						j--
-					}
 				}
 			}
 			txt1.SetText(fmt.Sprintf("Statki ustawiono prawidłowo naciśnij Ctrl + C aby przejść dalej"))
@@ -82,8 +82,15 @@ func SetShips() {
 }
 func lock() {
 	for l := 0; l < len(selectedX); l++ {
-		lockX = append(lockX, selectedX[l]+1)
-		lockY = append(lockY, selectedY[l]+1)
+		for i := -1; i <= 1; i++ {
+			for j := -1; j <= 1; j++ {
+				if selectedX[l]+i > 9 || selectedX[l]+i < 0 || selectedY[l]+j > 9 || selectedY[l]+j < 0 {
+					continue
+				}
+				lockX = append(lockX, selectedX[l]+i)
+				lockY = append(lockY, selectedY[l]+j)
+			}
+		}
 	}
 }
 func whichNumberInSelected(k int) int {
