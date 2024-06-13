@@ -17,8 +17,8 @@ func Connect() {
 
 	data := map[string]interface{}{
 		"coords":      advancedBoard.PlayerCoords,
-		"desc":        askPlayer.Nick,
-		"nick":        askPlayer.Desc,
+		"desc":        askPlayer.Desc,
+		"nick":        askPlayer.Nick,
 		"target_nick": askPlayer.OpNick,
 		"wpbot":       askPlayer.PlayWithBot,
 	}
